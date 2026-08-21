@@ -69,7 +69,7 @@ function HomePage({ onNavigate }: { onNavigate: (p: Page) => void }) {
       <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-start">
         <div className="w-full md:w-[45%] shrink-0">
           <img
-            src={img('images/IMG_9127.JPG')}
+            src={img('images/IMG_9127-home.avif')}
             alt="Алина в мастерской"
             className="w-full rounded-none"
             loading="lazy"
