@@ -17,6 +17,12 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=dokploy-network
+      - traefik.http.routers.faska-art-http.rule=Host(`faska-art.com`) || Host(`www.faska-art.com`)
+      - traefik.http.routers.faska-art-http.entrypoints=web
+      - traefik.http.routers.faska-art-http.middlewares=faska-art-https
+      - traefik.http.routers.faska-art-http.service=faska-art
+      - traefik.http.middlewares.faska-art-https.redirectscheme.scheme=https
+      - traefik.http.middlewares.faska-art-https.redirectscheme.permanent=true
       - traefik.http.routers.faska-art.rule=Host(`faska-art.com`) || Host(`www.faska-art.com`)
       - traefik.http.routers.faska-art.entrypoints=websecure
       - traefik.http.routers.faska-art.tls=true

@@ -47,6 +47,20 @@ test('the server build uses host networking while runtime stays isolated', () =>
   assert.equal(rendered.services['faska-art'].ports, undefined)
 })
 
+test('plain HTTP is permanently redirected to HTTPS by Traefik', () => {
+  const rendered = JSON.parse(execFileSync(
+    'docker',
+    ['compose', '-f', fileURLToPath(composeUrl), 'config', '--format', 'json'],
+    { encoding: 'utf8' },
+  ))
+  const labels = rendered.services['faska-art'].labels
+
+  assert.equal(labels['traefik.http.routers.faska-art-http.entrypoints'], 'web')
+  assert.equal(labels['traefik.http.routers.faska-art-http.middlewares'], 'faska-art-https')
+  assert.equal(labels['traefik.http.middlewares.faska-art-https.redirectscheme.scheme'], 'https')
+  assert.equal(labels['traefik.http.middlewares.faska-art-https.redirectscheme.permanent'], 'true')
+})
+
 test('the page metadata identifies the FASKA site', () => {
   assert.match(html, /<title>FASKA — керамика ручной работы<\/title>/)
   assert.match(html, /<meta name="description"/)
