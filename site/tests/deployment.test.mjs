@@ -8,6 +8,8 @@ const viteConfig = readFileSync(new URL('../vite.config.ts', import.meta.url), '
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8')
 const dockerfile = readFileSync(new URL('../Dockerfile', import.meta.url), 'utf8')
 const nginx = readFileSync(new URL('../deploy/nginx.conf', import.meta.url), 'utf8')
+const app = readFileSync(new URL('../src/App.tsx', import.meta.url), 'utf8')
+const css = readFileSync(new URL('../src/index.css', import.meta.url), 'utf8')
 const composeUrl = new URL('../../deploy/docker-compose.dokploy.yml', import.meta.url)
 const compose = readFileSync(composeUrl, 'utf8')
 
@@ -64,4 +66,31 @@ test('plain HTTP is permanently redirected to HTTPS by Traefik', () => {
 test('the page metadata identifies the FASKA site', () => {
   assert.match(html, /<title>FASKA — керамика ручной работы<\/title>/)
   assert.match(html, /<meta name="description"/)
+})
+
+test('the home portrait is optimized without dropping the JPEG fallback', () => {
+  assert.equal(existsSync(new URL('../public/images/IMG_9127-home.avif', import.meta.url)), true)
+  assert.match(app, /IMG_9127-home\.avif/)
+  assert.match(app, /IMG_9127\.JPG/)
+  assert.match(app, /width="600"/)
+  assert.match(app, /height="800"/)
+})
+
+test('interface fonts are local, licensed, and do not block on Google Fonts', () => {
+  const fontFiles = [
+    'forum-cyrillic.woff2',
+    'forum-latin.woff2',
+    'roboto-cyrillic.woff2',
+    'roboto-latin.woff2',
+    'OFL-Forum.txt',
+    'OFL-Roboto.txt',
+  ]
+
+  for (const fontFile of fontFiles) {
+    assert.equal(existsSync(new URL(`../public/fonts/${fontFile}`, import.meta.url)), true)
+  }
+
+  assert.doesNotMatch(html, /fonts\.googleapis\.com|fonts\.gstatic\.com/)
+  assert.match(css, /\/fonts\/forum-cyrillic\.woff2/)
+  assert.match(css, /\/fonts\/roboto-cyrillic\.woff2/)
 })

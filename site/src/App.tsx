@@ -68,12 +68,17 @@ function HomePage({ onNavigate }: { onNavigate: (p: Page) => void }) {
     <section className="max-w-[1200px] mx-auto px-[25px] py-12 md:py-20">
       <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-start">
         <div className="w-full md:w-[45%] shrink-0">
-          <img
-            src={img('images/IMG_9127.JPG')}
-            alt="Алина в мастерской"
-            className="w-full rounded-none"
-            loading="lazy"
-          />
+          <picture>
+            <source srcSet={img('images/IMG_9127-home.avif')} type="image/avif" />
+            <img
+              src={img('images/IMG_9127.JPG')}
+              alt="Алина в мастерской"
+              width="600"
+              height="800"
+              className="w-full rounded-none"
+              loading="lazy"
+            />
+          </picture>
         </div>
         <div className="w-full md:w-[55%]">
           <h1 className="font-[Forum] text-[36px] leading-[1.1] tracking-[0.02em] text-dark m-0 mb-2">
