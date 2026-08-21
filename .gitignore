@@ -1,0 +1,20 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+
+# Dependencies and build output
+node_modules/
+dist/
+.vite/
+coverage/
+
+# Agent/runtime output
+.worktrees/
+.runtime/
+output/
+
+# OS and editors
+.DS_Store
+.idea/
+.vscode/

@@ -1,0 +1,17 @@
+schema_version: 1
+name: faska-art.com
+owner: Alina
+technical_owner: Mikhail Larkin
+maturity: production
+runtime: static
+repository: https://github.com/larkinmd7/faska-art.com
+release_unit: site/dist
+routes:
+  - https://faska-art.com
+environments:
+  local: true
+  staging: false
+  production: true
+data_classification: public
+modules:
+  - production
