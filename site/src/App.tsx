@@ -71,6 +71,8 @@ function HomePage({ onNavigate }: { onNavigate: (p: Page) => void }) {
           <img
             src={img('images/IMG_9127-home.avif')}
             alt="Алина в мастерской"
+            width="600"
+            height="800"
             className="w-full rounded-none"
             loading="lazy"
           />
