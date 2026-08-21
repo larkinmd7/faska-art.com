@@ -3,6 +3,7 @@ services:
     build:
       context: ../site
       dockerfile: Dockerfile
+      network: host
     image: faska-art:${FASKA_ART_IMAGE_TAG:-latest}
     restart: unless-stopped
     healthcheck:

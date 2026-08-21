@@ -1,12 +1,15 @@
 import assert from 'node:assert/strict'
+import { execFileSync } from 'node:child_process'
 import { existsSync, readFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
 import test from 'node:test'
 
 const viteConfig = readFileSync(new URL('../vite.config.ts', import.meta.url), 'utf8')
 const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8')
 const dockerfile = readFileSync(new URL('../Dockerfile', import.meta.url), 'utf8')
 const nginx = readFileSync(new URL('../deploy/nginx.conf', import.meta.url), 'utf8')
-const compose = readFileSync(new URL('../../deploy/docker-compose.dokploy.yml', import.meta.url), 'utf8')
+const composeUrl = new URL('../../deploy/docker-compose.dokploy.yml', import.meta.url)
+const compose = readFileSync(composeUrl, 'utf8')
 
 test('the custom-domain build uses the domain root', () => {
   assert.match(viteConfig, /base:\s*['"]\/["']/)
@@ -30,6 +33,18 @@ test('Dockploy routes the isolated compose service through Traefik', () => {
   assert.match(compose, /Host\(`faska-art\.com`\)/)
   assert.match(compose, /loadbalancer\.server\.port=8080/)
   assert.doesNotMatch(compose, /ports:/)
+})
+
+test('the server build uses host networking while runtime stays isolated', () => {
+  const rendered = JSON.parse(execFileSync(
+    'docker',
+    ['compose', '-f', fileURLToPath(composeUrl), 'config', '--format', 'json'],
+    { encoding: 'utf8' },
+  ))
+
+  assert.equal(rendered.services['faska-art'].build.network, 'host')
+  assert.deepEqual(rendered.services['faska-art'].networks, { 'dokploy-network': null })
+  assert.equal(rendered.services['faska-art'].ports, undefined)
 })
 
 test('the page metadata identifies the FASKA site', () => {
