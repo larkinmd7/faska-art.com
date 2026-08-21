@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import type { WorkItem } from '../data'
+import { optimizedImage, type WorkItem } from '../data'
 
 interface GalleryProps {
   items: WorkItem[]
@@ -19,14 +19,18 @@ function LazyImage({ src, alt, onClick }: { src: string; alt: string; onClick: (
       className={`lazy-image cursor-pointer overflow-hidden ${loaded ? 'loaded' : ''}`}
       onClick={onClick}
     >
-      <img
-        ref={imgRef}
-        src={src}
-        alt={alt}
-        className="w-full h-full object-cover block hover:scale-[1.03] transition-transform duration-500"
-        loading="lazy"
-        onLoad={() => setLoaded(true)}
-      />
+      <picture className="block w-full h-full">
+        <source srcSet={optimizedImage(src, 'thumb')} type="image/avif" />
+        <img
+          ref={imgRef}
+          src={src}
+          alt={alt}
+          className="w-full h-full object-cover block hover:scale-[1.03] transition-transform duration-500"
+          loading="lazy"
+          decoding="async"
+          onLoad={() => setLoaded(true)}
+        />
+      </picture>
     </div>
   )
 }

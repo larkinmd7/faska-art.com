@@ -18,6 +18,14 @@ const BASE = import.meta.env.BASE_URL
 
 export const img = (path: string) => `${BASE}${path}`
 
+export const optimizedImage = (src: string, variant: 'thumb' | 'full') => {
+  const slash = src.lastIndexOf('/')
+  const dot = src.lastIndexOf('.')
+  const directory = src.slice(0, slash + 1)
+  const stem = src.slice(slash + 1, dot)
+  return `${directory}optimized/${stem}-${variant}.avif`
+}
+
 export const categories: Category[] = [
   { id: 'mugs', title: 'Кружки и посуда', slug: 'kruzhki', cover: img('images/IMG_9031.jpg') },
   { id: 'mirrors', title: 'Зеркала и мозаика', slug: 'zerkala', cover: img('images/IMG_2433.jpg') },
