@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className="py-10 text-center">
       <p className="text-[14px] text-dark mb-1">
-        Керамика ручной работы — Алина
+        Керамика ручной работы — Faska Art
       </p>
       <nav aria-label="Социальные сети" className="flex items-center justify-center gap-3 mb-2 text-[14px]">
         <a

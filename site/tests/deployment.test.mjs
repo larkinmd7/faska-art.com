@@ -64,8 +64,11 @@ test('plain HTTP is permanently redirected to HTTPS by Traefik', () => {
 })
 
 test('the page metadata identifies the FASKA site', () => {
-  assert.match(html, /<title>FASKA — керамика ручной работы<\/title>/)
+  assert.match(html, /<title>Faska Art<\/title>/)
   assert.match(html, /<meta name="description"/)
+  assert.match(html, /href="\/brand\/faska-art-mark\.svg\?v=3"/)
+  assert.match(html, /href="\/favicon-32\.png\?v=3"/)
+  assert.match(html, /href="\/apple-touch-icon\.png\?v=3"/)
 })
 
 test('the home portrait is optimized without dropping the JPEG fallback', () => {
