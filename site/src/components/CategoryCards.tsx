@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { Category } from '../data'
+import { optimizedImage, type Category } from '../data'
 
 interface CategoryCardsProps {
   categories: Category[]
@@ -33,13 +33,17 @@ function CategoryCard({ category, onSelect, large }: { category: Category; onSel
     >
       <div className={`overflow-hidden ${large ? 'aspect-square' : 'aspect-[4/3]'}`}>
         <div className={`lazy-image w-full h-full ${loaded ? 'loaded' : ''}`}>
-          <img
-            src={category.cover}
-            alt={category.title}
-            className="w-full h-full object-cover block transition-transform duration-500 group-hover:scale-105"
-            loading="lazy"
-            onLoad={() => setLoaded(true)}
-          />
+          <picture className="block w-full h-full">
+            <source srcSet={optimizedImage(category.cover, 'thumb')} type="image/avif" />
+            <img
+              src={category.cover}
+              alt={category.title}
+              className="w-full h-full object-cover block transition-transform duration-500 group-hover:scale-105"
+              loading="lazy"
+              decoding="async"
+              onLoad={() => setLoaded(true)}
+            />
+          </picture>
         </div>
       </div>
       <p className="text-[14px] text-dark mt-3 text-center group-hover:underline transition-all">

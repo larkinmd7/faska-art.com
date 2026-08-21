@@ -1,5 +1,5 @@
 import { useEffect, useCallback } from 'react'
-import type { WorkItem } from '../data'
+import { optimizedImage, type WorkItem } from '../data'
 
 interface LightboxProps {
   items: WorkItem[]
@@ -42,11 +42,15 @@ export default function Lightbox({ items, index, onClose, onNavigate }: Lightbox
       >
         {/* Фото слева */}
         <div className="md:w-[60%] w-full bg-[#f5f5f5] flex items-center justify-center relative shrink-0 max-h-[55vh] md:max-h-none md:min-h-0">
-          <img
-            src={item.src}
-            alt={item.alt}
-            className="w-full h-full object-contain max-h-[55vh] md:max-h-[85vh]"
-          />
+          <picture className="w-full h-full flex items-center justify-center">
+            <source srcSet={optimizedImage(item.src, 'full')} type="image/avif" />
+            <img
+              src={item.src}
+              alt={item.alt}
+              className="w-full h-full object-contain max-h-[55vh] md:max-h-[85vh]"
+              decoding="async"
+            />
+          </picture>
           {/* Навигация */}
           <button
             onClick={goPrev}
