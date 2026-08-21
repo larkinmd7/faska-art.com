@@ -1,0 +1,27 @@
+services:
+  faska-art:
+    build:
+      context: ../site
+      dockerfile: Dockerfile
+    image: faska-art:${FASKA_ART_IMAGE_TAG:-latest}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:8080/healthz || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - dokploy-network
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=dokploy-network
+      - traefik.http.routers.faska-art.rule=Host(`faska-art.com`) || Host(`www.faska-art.com`)
+      - traefik.http.routers.faska-art.entrypoints=websecure
+      - traefik.http.routers.faska-art.tls=true
+      - traefik.http.routers.faska-art.tls.certresolver=letsencrypt
+      - traefik.http.services.faska-art.loadbalancer.server.port=8080
+
+networks:
+  dokploy-network:
+    external: true

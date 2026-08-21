@@ -3,9 +3,15 @@ name: faska-art.com
 owner: Alina
 technical_owner: Mikhail Larkin
 maturity: production
-runtime: static
+runtime: docker-static
 repository: https://github.com/larkinmd7/faska-art.com
-release_unit: site/dist
+release_unit: docker-image
+deployment:
+  provider: timeweb
+  platform: dockploy
+  project: web-sites
+  compose: faska-art
+  source_branch: main
 routes:
   - https://faska-art.com
 environments:

@@ -7,7 +7,7 @@
 - Product owner: Алина
 - Technical owner: Михаил Ларькин
 - Maturity: production
-- Runtime: static
+- Runtime: static in Docker/Dockploy
 - Repository: https://github.com/larkinmd7/faska-art.com
 - Production: https://faska-art.com
 - Rollback route: https://larkinmd7.github.io/larkinmd7-content/alina-ceramics/
@@ -34,7 +34,11 @@ PATH=/opt/homebrew/opt/node@22/bin:$PATH npm run build
 ## Карта
 
 - `site/` — React/Vite-исходники;
+- `deploy/docker-compose.dokploy.yml` — production compose для Dockploy;
 - `Конкуренты/` — накопленные исследования рынка;
 - `INDEX.md` — канонические связи CyberOS;
 - `docs/decisions/` — устойчивые решения;
 - `docs/production/паспорт.md` — production-контракт и rollback.
+
+GitHub используется только как source repository. Production собирается из
+`main` внутри Dockploy project `web-sites`; GitHub Pages отключён.

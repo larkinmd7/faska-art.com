@@ -6,7 +6,7 @@
 Владелец продукта — Алина; технический owner — Михаил Ларькин.
 
 Зрелость: `production`.
-Runtime: `static`.
+Runtime: `static` in Docker/Dockploy.
 
 ## Вход в задачу
 
@@ -30,14 +30,15 @@ smoke:  HTTP 200 + desktop/mobile browser check + no console errors
 ## Git и release
 
 - `main` хранит исходники и контракты проекта.
-- `gh-pages` хранит только собранный `site/dist` и публикуется из корня GitHub Pages.
+- `main` разворачивается в отдельный Docker Compose service через Dockploy.
 - Одна задача = одна короткоживущая ветка `codex/*` = один PR.
 - Без force push, прямых правок production-артефакта и удаления legacy-маршрута без отдельного решения.
 
 ## Инварианты
 
 - Production-ассеты работают от корня custom domain; `vite.config.ts` сохраняет `base: '/'`.
-- `site/public/CNAME` содержит только `faska-art.com` и попадает в каждую production-сборку.
+- GitHub хранит только исходники: GitHub Pages и `CNAME` не используются.
+- Production обслуживает compose `faska-art` в Dockploy project `web-sites`.
 - Фото и публичные контакты не заменяются без согласования с владельцем продукта.
 
 ## Definition of Done
